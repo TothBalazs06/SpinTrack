@@ -91,7 +91,7 @@ namespace SpinTrack.Views
             string input = ArtistTextBox.Text;
             if (string.IsNullOrWhiteSpace(input))
             {
-                SuggestionsPopup.IsOpen = false; // Hide suggestions if no input
+                SuggestionsPopup.IsOpen = false;
                 return;
             }
 
@@ -101,12 +101,12 @@ namespace SpinTrack.Views
 
             if (suggestions.Any())
             {
-                SuggestionsListBox.ItemsSource = suggestions; // Set suggestions
-                SuggestionsPopup.IsOpen = true;              // Show suggestions
+                SuggestionsListBox.ItemsSource = suggestions;
+                SuggestionsPopup.IsOpen = true;
             }
             else
             {
-                SuggestionsPopup.IsOpen = false; // Hide suggestions if none match
+                SuggestionsPopup.IsOpen = false;
             }
         }
 
@@ -115,7 +115,7 @@ namespace SpinTrack.Views
             if (SuggestionsListBox.SelectedItem != null)
             {
                 ArtistTextBox.Text = SuggestionsListBox.SelectedItem.ToString();
-                SuggestionsPopup.IsOpen = false; // Close the popup
+                SuggestionsPopup.IsOpen = false;
             }
         }
 
