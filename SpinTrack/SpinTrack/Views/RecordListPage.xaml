@@ -63,6 +63,7 @@
                 <ComboBoxItem Content="EP" />
                 <ComboBoxItem Content="SP" />
             </ComboBox>
+
         </StackPanel>
 
         <!-- ListView -->

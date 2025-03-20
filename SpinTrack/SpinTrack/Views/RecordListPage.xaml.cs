@@ -30,16 +30,18 @@
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Set the license context
 
+            var records = new List<Record>(); // Temporary list for current records
+
             using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
             {
                 var worksheet = package.Workbook.Worksheets["Records"];
-                if (worksheet?.Dimension == null || worksheet.Dimension.End.Row < 2) // No data rows
+                if (worksheet?.Dimension == null || worksheet.Dimension.End.Row < 2)
                 {
-                    RecordListView.ItemsSource = new List<Record>(); // Set empty list if no data
+                    _allRecords = new List<Record>(); // Update _allRecords even if empty
+                    RecordListView.ItemsSource = _allRecords;
                     return;
                 }
 
-                var records = new List<Record>();
                 int rowCount = worksheet.Dimension.End.Row;
                 for (int row = 2; row <= rowCount; row++) // Skip header row
                 {
@@ -58,11 +60,11 @@
                     };
                     records.Add(record);
                 }
-
-                RecordListView.ItemsSource = records;
             }
-        }
 
+            _allRecords = records;
+            RecordListView.ItemsSource = records;
+        }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -79,30 +81,47 @@
 
         private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
-
-            var filteredRecords = _allRecords;
-
-            if (selectedFilter != "All Genres")
-            {
-                filteredRecords = filteredRecords.Where(record => record.Category == selectedFilter).ToList();
-            }
-
-            RecordListView.ItemsSource = filteredRecords;
+            ApplyFilters(); // Combine filters
         }
 
         private void FilterLengthComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
+            ApplyFilters(); // Combine filters
+        }
 
+        private void ApplyFilters()
+        {
+            // Start with the full list of records
             var filteredRecords = _allRecords;
 
-            if (selectedFilter != "All Lengths")
+            // Filter by genre
+            string genreFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (!string.IsNullOrEmpty(genreFilter) && genreFilter != "All Genres")
             {
-                filteredRecords = filteredRecords.Where(record => record.Length == selectedFilter).ToList();
+                filteredRecords = filteredRecords.Where(record => record.Category == genreFilter).ToList();
             }
 
+            // Filter by length
+            string lengthFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (!string.IsNullOrEmpty(lengthFilter) && lengthFilter != "All Lengths")
+            {
+                filteredRecords = filteredRecords.Where(record => record.Length == lengthFilter).ToList();
+            }
+
+            // Update the ListView with the filtered data
             RecordListView.ItemsSource = filteredRecords;
+        }
+
+
+
+        private void ResetFilters_Click(object sender, RoutedEventArgs e)
+        {
+            // Reset ComboBoxes
+            FilterComboBox.SelectedIndex = 0; // Select "All Genres"
+            FilterLengthComboBox.SelectedIndex = 0; // Select "All Lengths"
+
+            // Reset the ListView
+            RecordListView.ItemsSource = _allRecords; // Show all records
         }
 
         private void DeleteSelectedRecord(object sender, RoutedEventArgs e)
