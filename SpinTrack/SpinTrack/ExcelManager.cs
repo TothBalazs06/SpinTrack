@@ -7,7 +7,6 @@ public class ExcelManager
 
     public ExcelManager()
     {
-        // Check if the file exists; if not, create it
         if (!File.Exists(_filePath))
         {
             using (var package = new ExcelPackage())
@@ -21,11 +20,14 @@ public class ExcelManager
                 worksheet.Cells[1, 6].Value = "Quantity";
                 worksheet.Cells[1, 7].Value = "Outer Cover";
                 worksheet.Cells[1, 8].Value = "Inner Cover";
+                worksheet.Cells[1, 9].Value = "Vinyl Quality";
+                worksheet.Cells[1, 10].Value = "Sleeve Quality";
 
                 package.SaveAs(new FileInfo(_filePath));
             }
         }
     }
+
 
     public string FilePath => _filePath;
 

@@ -20,5 +20,4 @@ namespace SpinTrack
         public string VinylQuality { get; set; }
         public string SleeveQuality { get; set; }
     }
-
 }

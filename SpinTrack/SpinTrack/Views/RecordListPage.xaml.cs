@@ -22,23 +22,14 @@
 
             using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
             {
-                // Check if the file is empty or the worksheet does not exist
-                if (package.Workbook.Worksheets.Count == 0 || package.Workbook.Worksheets["Records"] == null)
-                {
-                    RecordListView.ItemsSource = records; // Clear the ListView to show an empty state
-                    return;
-
-                }
-
                 var worksheet = package.Workbook.Worksheets["Records"];
-                if (worksheet.Dimension == null || worksheet.Dimension.End.Row < 2) // No data rows
+                if (worksheet?.Dimension == null || worksheet.Dimension.End.Row < 2) // No data rows
                 {
-                    RecordListView.ItemsSource = records;
+                    RecordListView.ItemsSource = records; // Set empty list if no data
                     return;
                 }
 
                 int rowCount = worksheet.Dimension.End.Row;
-
                 for (int row = 2; row <= rowCount; row++) // Skip header row
                 {
                     var record = new Record
@@ -50,16 +41,18 @@
                         Length = worksheet.Cells[row, 5].Text,
                         Quantity = worksheet.Cells[row, 6].Text,
                         HasOuterCover = worksheet.Cells[row, 7].Text == "Yes",
-                        HasInnerCover = worksheet.Cells[row, 8].Text == "Yes"
+                        HasInnerCover = worksheet.Cells[row, 8].Text == "Yes",
+                        VinylQuality = worksheet.Cells[row, 9].Text,
+                        SleeveQuality = worksheet.Cells[row, 10].Text
                     };
                     records.Add(record);
                 }
-
             }
 
             // Set the ListView's ItemsSource
             RecordListView.ItemsSource = records;
         }
+
 
 
         private void DeleteSelectedRecord(object sender, RoutedEventArgs e)
