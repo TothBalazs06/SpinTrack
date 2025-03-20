@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpinTrack", "SpinTrack\SpinTrack.csproj", "{B73397FB-E911-4421-B19A-B1FD4C57DFCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADB767C8-0E6E-4CA2-A41A-2CFC868E6D50}
+	EndGlobalSection
+EndGlobal

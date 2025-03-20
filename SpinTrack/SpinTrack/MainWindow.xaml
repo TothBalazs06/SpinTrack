@@ -1,0 +1,28 @@
+﻿<Window x:Class="SpinTrack.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SpinTrack" Height="600" Width="900" Background="#ECEFF1" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <!-- Navigation Panel -->
+        <DockPanel>
+            <StackPanel Background="#2C3E50" Orientation="Vertical" Width="200" DockPanel.Dock="Left">
+                <TextBlock Text="SpinTrack" FontSize="18" Foreground="White" Margin="10" />
+                <Button Content="Add Record"
+                        Height="50"
+                        Foreground="White"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        Click="NavigateToAddRecord" />
+                <Button Content="Record List"
+                        Height="50"
+                        Foreground="White"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        Click="NavigateToRecordList" />
+            </StackPanel>
+
+            <!-- Main Content -->
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" DockPanel.Dock="Right" Background="LightGray" />
+        </DockPanel>
+    </Grid>
+</Window>
