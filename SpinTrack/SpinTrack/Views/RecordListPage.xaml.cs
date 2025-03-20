@@ -16,8 +16,8 @@
         {
             InitializeComponent();
             this.Loaded += RecordListPage_Loaded;
-            FilterComboBox.SelectedIndex = 0; // Select the first item ("All Genres")
-            FilterLengthComboBox.SelectedIndex = 0; // Select the first item ("All Genres")
+            FilterComboBox.SelectedIndex = 0;
+            FilterLengthComboBox.SelectedIndex = 0;
         }
 
         private void RecordListPage_Loaded(object sender, RoutedEventArgs e)
@@ -28,22 +28,22 @@
 
         private void LoadRecords()
         {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Set the license context
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            var records = new List<Record>(); // Temporary list for current records
+            var records = new List<Record>();
 
             using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
             {
                 var worksheet = package.Workbook.Worksheets["Records"];
                 if (worksheet?.Dimension == null || worksheet.Dimension.End.Row < 2)
                 {
-                    _allRecords = new List<Record>(); // Update _allRecords even if empty
+                    _allRecords = new List<Record>();
                     RecordListView.ItemsSource = _allRecords;
                     return;
                 }
 
                 int rowCount = worksheet.Dimension.End.Row;
-                for (int row = 2; row <= rowCount; row++) // Skip header row
+                for (int row = 2; row <= rowCount; row++)
                 {
                     var record = new Record
                     {
@@ -81,59 +81,61 @@
 
         private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ApplyFilters(); // Combine filters
+            ApplyFilters();
         }
 
         private void FilterLengthComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ApplyFilters(); // Combine filters
+            ApplyFilters();
         }
 
         private void ApplyFilters()
         {
-            // Start with the full list of records
+
             var filteredRecords = _allRecords;
 
-            // Filter by genre
             string genreFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
             if (!string.IsNullOrEmpty(genreFilter) && genreFilter != "All Genres")
             {
                 filteredRecords = filteredRecords.Where(record => record.Category == genreFilter).ToList();
             }
 
-            // Filter by length
             string lengthFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
             if (!string.IsNullOrEmpty(lengthFilter) && lengthFilter != "All Lengths")
             {
                 filteredRecords = filteredRecords.Where(record => record.Length == lengthFilter).ToList();
             }
 
-            // Update the ListView with the filtered data
             RecordListView.ItemsSource = filteredRecords;
         }
 
 
-
         private void ResetFilters_Click(object sender, RoutedEventArgs e)
         {
-            // Reset ComboBoxes
-            FilterComboBox.SelectedIndex = 0; // Select "All Genres"
-            FilterLengthComboBox.SelectedIndex = 0; // Select "All Lengths"
+            try
+            {
+                FilterComboBox.SelectedIndex = 0;
+                FilterLengthComboBox.SelectedIndex = 0;
 
-            // Reset the ListView
-            RecordListView.ItemsSource = _allRecords; // Show all records
+                SearchTextBox.Text = string.Empty;
+
+                RecordListView.ItemsSource = _allRecords;
+            }
+            catch (Exception ex)
+            {
+                new CustomMessageBox($"An error occurred while resetting filters: {ex.Message}").ShowDialog();
+            }
         }
+
 
         private void DeleteSelectedRecord(object sender, RoutedEventArgs e)
         {
             if (RecordListView.SelectedItem is Record selectedRecord)
             {
-                // Show the confirmation dialog
                 CustomMessageBox confirmDialog = new CustomMessageBox("Are you sure you want to delete this record?", "Yes", "No");
                 confirmDialog.ShowDialog();
 
-                // Check the result of the dialog
-                if (confirmDialog.ConfirmationResult) // Only proceed if the user clicked "Yes"
+                if (confirmDialog.ConfirmationResult)
                 {
                     using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
                     {
@@ -145,24 +147,21 @@
                             if (worksheet.Cells[row, 1].Text == selectedRecord.Artist &&
                                 worksheet.Cells[row, 2].Text == selectedRecord.AlbumTitle)
                             {
-                                worksheet.DeleteRow(row); // Delete the row
+                                worksheet.DeleteRow(row);
                                 break;
                             }
                         }
 
-                        package.Save(); // Save changes
+                        package.Save();
                     }
 
-                    // Show success message
                     new CustomMessageBox("Record deleted successfully.", "OK").ShowDialog();
 
-                    // Reload the ListView
                     LoadRecords();
                 }
             }
             else
             {
-                // Show an error message if no record is selected
                 new CustomMessageBox("Please select a record to delete.", "OK").ShowDialog();
             }
         }
@@ -175,7 +174,6 @@
         {
             if (RecordListView.SelectedItem is Record selectedRecord)
             {
-                // Remove the record from Excel first
                 using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
                 {
                     var worksheet = package.Workbook.Worksheets["Records"];
@@ -194,7 +192,6 @@
                     package.Save();
                 }
 
-                // Navigate to Add Record Page for editing
                 var addRecordPage = new AddRecordPage
                 {
                     ArtistTextBox = { Text = selectedRecord.Artist },
@@ -205,7 +202,6 @@
                     InnerCoverCheckBox = { IsChecked = selectedRecord.HasInnerCover }
                 };
 
-                // Set Category and Length
                 foreach (ComboBoxItem item in addRecordPage.CategoryComboBox.Items)
                 {
                     if (item.Content.ToString() == selectedRecord.Category)
@@ -235,7 +231,6 @@
 
         public void ImportRecords(object sender, RoutedEventArgs e)
         {
-            // Open file dialog to select the Excel file
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "Excel Files (*.xlsx)|*.xlsx",
@@ -255,7 +250,6 @@
                         return;
                     }
 
-                    // Validate the column layout
                     var expectedColumns = new[] { "Artist", "Album Title", "Release Year", "Category", "Length",
                                           "Quantity", "Outer Cover", "Inner Cover",
                                           "Vinyl Quality", "Sleeve Quality" };
@@ -268,7 +262,6 @@
                         }
                     }
 
-                    // Merge records
                     using (var currentPackage = new ExcelPackage(new System.IO.FileInfo(_filePath)))
                     {
                         var currentWorksheet = currentPackage.Workbook.Worksheets["Records"];
@@ -365,8 +358,5 @@
                 }
             }
         }
-
-
-
     }
 }

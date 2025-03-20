@@ -63,6 +63,9 @@
                 <ComboBoxItem Content="EP" />
                 <ComboBoxItem Content="SP" />
             </ComboBox>
+            <Button Content="Reset Filters" Width="120" Margin="0"
+        Background="Transparent" BorderThickness="1" BorderBrush="SlateGray" Foreground="WhiteSmoke"
+        Click="ResetFilters_Click" />
 
         </StackPanel>
 

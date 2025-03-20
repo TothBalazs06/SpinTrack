@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace SpinTrack.Views
 {
-    /// <summary>
-    /// Interaction logic for AddRecordPage.xaml
-    /// </summary>
     public partial class AddRecordPage : Page
     {
         public AddRecordPage()

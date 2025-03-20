@@ -7,7 +7,7 @@
             <TextBlock Text="Credits and Help" FontSize="24" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,0,0,20" />
 
             <!-- Creator Attribution -->
-            <TextBlock Text="SpinTrack created by TothBalazs06"
+            <TextBlock Text="SpinTrack created by Balazs Toth"
                        FontSize="16" Foreground="LightGray" Margin="0,0,0,10" TextWrapping="Wrap" />
 
             <!-- GitHub Repository -->
