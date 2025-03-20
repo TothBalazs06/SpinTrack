@@ -1,24 +1,42 @@
 ﻿<Window x:Class="SpinTrack.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SpinTrack" Height="600" Width="900" Background="#ECEFF1" WindowStartupLocation="CenterScreen">
+        Height="600" MinHeight="350" MinWidth="525" Width="900" Background="#ECEFF1" WindowStartupLocation="CenterScreen"
+        Icon="icon.ico" Title="SpinTrack">
     <Grid>
         <!-- Navigation Panel -->
         <DockPanel>
             <StackPanel Background="#2C3E50" Orientation="Vertical" Width="200" DockPanel.Dock="Left">
-                <TextBlock Text="SpinTrack" FontSize="18" Foreground="White" Margin="10" />
+                <!-- Buttons -->
                 <Button Content="Add Record"
                         Height="50"
                         Foreground="White"
                         Background="Transparent"
                         HorizontalAlignment="Stretch"
-                        Click="NavigateToAddRecord" />
+                        Click="NavigateToAddRecord"
+                        FontSize="20" />
                 <Button Content="Record List"
                         Height="50"
                         Foreground="White"
                         Background="Transparent"
                         HorizontalAlignment="Stretch"
-                        Click="NavigateToRecordList" />
+                        Click="NavigateToRecordList"
+                        FontSize="20" />
+                <Button Content="Credits"
+                        Height="50"
+                        Foreground="White"
+                        Background="Transparent"
+                        HorizontalAlignment="Stretch"
+                        Click="NavigateToCreditsPage"
+                        FontSize="20" />
+
+                <!-- Spacer to push label to the bottom -->
+                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="10">
+                    <Label Content="Created by TothBalazs06"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           FontSize="12" />
+                </StackPanel>
             </StackPanel>
 
             <!-- Main Content -->

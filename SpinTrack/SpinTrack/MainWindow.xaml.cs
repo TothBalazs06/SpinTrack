@@ -12,25 +12,30 @@ using System.Windows.Shapes;
 
 namespace SpinTrack
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+
+            // Navigate to Add Record Page by default
+            MainFrame.Navigate(new AddRecordPage());
         }
 
         private void NavigateToAddRecord(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new AddRecordPage();
+            MainFrame.Navigate(new AddRecordPage());
         }
 
         private void NavigateToRecordList(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new RecordListPage();
+            MainFrame.Navigate(new RecordListPage());
         }
 
+        private void NavigateToCreditsPage(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new CreditsPage());
+        }
     }
+
 }

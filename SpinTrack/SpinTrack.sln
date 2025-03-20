@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpinTrack", "SpinTrack\SpinTrack.csproj", "{B73397FB-E911-4421-B19A-B1FD4C57DFCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpinTrack", "SpinTrack\SpinTrack.csproj", "{B73397FB-E911-4421-B19A-B1FD4C57DFCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpinTrackTests", "SpinTrackTests\SpinTrackTests.csproj", "{D8E0C424-1018-44A9-8C60-138F68E58EBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B73397FB-E911-4421-B19A-B1FD4C57DFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8E0C424-1018-44A9-8C60-138F68E58EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8E0C424-1018-44A9-8C60-138F68E58EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8E0C424-1018-44A9-8C60-138F68E58EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8E0C424-1018-44A9-8C60-138F68E58EBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
