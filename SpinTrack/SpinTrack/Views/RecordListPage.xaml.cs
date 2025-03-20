@@ -10,25 +10,36 @@
     {
         private readonly string _filePath = "SpinTrackRecords.xlsx";
 
+        private List<Record> _allRecords = new List<Record>();
+
         public RecordListPage()
         {
             InitializeComponent();
+            this.Loaded += RecordListPage_Loaded;
+            FilterComboBox.SelectedIndex = 0; // Select the first item ("All Genres")
+            FilterLengthComboBox.SelectedIndex = 0; // Select the first item ("All Genres")
+        }
+
+        private void RecordListPage_Loaded(object sender, RoutedEventArgs e)
+        {
             LoadRecords();
         }
 
+
         private void LoadRecords()
         {
-            var records = new List<Record>();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Set the license context
 
             using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
             {
                 var worksheet = package.Workbook.Worksheets["Records"];
                 if (worksheet?.Dimension == null || worksheet.Dimension.End.Row < 2) // No data rows
                 {
-                    RecordListView.ItemsSource = records; // Set empty list if no data
+                    RecordListView.ItemsSource = new List<Record>(); // Set empty list if no data
                     return;
                 }
 
+                var records = new List<Record>();
                 int rowCount = worksheet.Dimension.End.Row;
                 for (int row = 2; row <= rowCount; row++) // Skip header row
                 {
@@ -47,13 +58,52 @@
                     };
                     records.Add(record);
                 }
-            }
 
-            // Set the ListView's ItemsSource
-            RecordListView.ItemsSource = records;
+                RecordListView.ItemsSource = records;
+            }
         }
 
 
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchText = SearchTextBox.Text.ToLower();
+
+            var filteredRecords = _allRecords.Where(record =>
+                record.Artist.ToLower().Contains(searchText) ||
+                record.AlbumTitle.ToLower().Contains(searchText) ||
+                record.ReleaseYear.ToLower().Contains(searchText)).ToList();
+
+
+            RecordListView.ItemsSource = filteredRecords;
+        }
+
+        private void FilterComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
+
+            var filteredRecords = _allRecords;
+
+            if (selectedFilter != "All Genres")
+            {
+                filteredRecords = filteredRecords.Where(record => record.Category == selectedFilter).ToList();
+            }
+
+            RecordListView.ItemsSource = filteredRecords;
+        }
+
+        private void FilterLengthComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
+
+            var filteredRecords = _allRecords;
+
+            if (selectedFilter != "All Lengths")
+            {
+                filteredRecords = filteredRecords.Where(record => record.Length == selectedFilter).ToList();
+            }
+
+            RecordListView.ItemsSource = filteredRecords;
+        }
 
         private void DeleteSelectedRecord(object sender, RoutedEventArgs e)
         {

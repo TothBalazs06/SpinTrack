@@ -46,7 +46,7 @@ namespace SpinTrack
                     worksheet.Cells[1, 1].Value = "Artist";
                     worksheet.Cells[1, 2].Value = "Album Title";
                     worksheet.Cells[1, 3].Value = "Release Year";
-                    worksheet.Cells[1, 4].Value = "Category";
+                    worksheet.Cells[1, 4].Value = "Genre";
                     worksheet.Cells[1, 5].Value = "Length";
                     worksheet.Cells[1, 6].Value = "Quantity";
                     worksheet.Cells[1, 7].Value = "Outer Cover";

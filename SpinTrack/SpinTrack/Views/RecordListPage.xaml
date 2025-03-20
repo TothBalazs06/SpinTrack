@@ -5,6 +5,7 @@
     <Grid Background="#302621" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -15,14 +16,63 @@
                    FontSize="24" FontWeight="Bold"
                    Margin="0,0,0,20" />
 
+        <!-- Search and Filter Controls -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <!-- Search TextBox -->
+            <TextBox x:Name="SearchTextBox"
+                     Width="200"
+                     Style="{StaticResource placeHolder}" Tag="Search by Title, Artist, Year"
+                     TextChanged="SearchTextBox_TextChanged"
+                     Margin="0,0,10,0"/>
+
+            <!-- Filter ComboBox -->
+            <ComboBox x:Name="FilterComboBox"
+                      Width="200"
+                      SelectionChanged="FilterComboBox_SelectionChanged"
+                      Margin="0,0,10,0">
+                <ComboBoxItem Content="All Genres" />
+                <ComboBoxItem Content="Rock" />
+                <ComboBoxItem Content="Pop" />
+                <ComboBoxItem Content="Hip-Hop/Rap" />
+                <ComboBoxItem Content="R&amp;B/Soul" />
+                <ComboBoxItem Content="Jazz" />
+                <ComboBoxItem Content="Classical" />
+                <ComboBoxItem Content="Country" />
+                <ComboBoxItem Content="Electronic/Dance" />
+                <ComboBoxItem Content="Reggae" />
+                <ComboBoxItem Content="Blues" />
+                <ComboBoxItem Content="Folk" />
+                <ComboBoxItem Content="Latin" />
+                <ComboBoxItem Content="K-Pop" />
+                <ComboBoxItem Content="Gospel" />
+                <ComboBoxItem Content="Punk" />
+                <ComboBoxItem Content="Funk" />
+                <ComboBoxItem Content="Heavy Metal" />
+                <ComboBoxItem Content="World Music" />
+                <ComboBoxItem Content="Soundtrack/Film Scores" />
+                <ComboBoxItem Content="New Age" />
+                <ComboBoxItem Content="Disco" />
+                <ComboBoxItem Content="Grunge" />
+            </ComboBox>
+            <ComboBox x:Name="FilterLengthComboBox"
+                      Width="200"
+                      SelectionChanged="FilterLengthComboBox_SelectionChanged"
+                      Margin="0,0,10,0">
+                <ComboBoxItem Content="All Lengths" />
+                <ComboBoxItem Content="LP" />
+                <ComboBoxItem Content="EP" />
+                <ComboBoxItem Content="SP" />
+            </ComboBox>
+        </StackPanel>
+
         <!-- ListView -->
-        <ListView x:Name="RecordListView" Grid.Row="1" Margin="0,10">
+        <ListView x:Name="RecordListView" Grid.Row="2" Margin="0,10">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding Artist}" Width="150" />
                     <GridViewColumn Header="Album Title" DisplayMemberBinding="{Binding AlbumTitle}" Width="200" />
                     <GridViewColumn Header="Release Year" DisplayMemberBinding="{Binding ReleaseYear}" Width="100" />
-                    <GridViewColumn Header="Category" DisplayMemberBinding="{Binding Category}" Width="150" />
+                    <GridViewColumn Header="Genre" DisplayMemberBinding="{Binding Category}" Width="150" />
                     <GridViewColumn Header="Length" DisplayMemberBinding="{Binding Length}" Width="100" />
                     <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}" Width="100" />
                     <GridViewColumn Header="Outer Cover" DisplayMemberBinding="{Binding HasOuterCover}" Width="100" />
@@ -34,8 +84,8 @@
         </ListView>
 
         <!-- Responsive Buttons -->
-        <WrapPanel Grid.Row="2" Margin="0,20,0,0" ItemHeight="40" ItemWidth="120" Orientation="Horizontal">
-            <Button Content="Edit" Background="#FFC107" Foreground="White" Width="100" Click="EditSelectedRecord" Margin="0,0,10,10"/>
+        <WrapPanel Grid.Row="3" Margin="0,20,0,0" ItemHeight="40" ItemWidth="120" Orientation="Horizontal">
+            <Button Content="Edit" Background="#FFA000" Foreground="White" Width="100" Click="EditSelectedRecord" Margin="0,0,10,10"/>
             <Button Content="Delete" Background="#E74C3C" Foreground="White" Width="100" Click="DeleteSelectedRecord" Margin="0,0,10,10" />
             <Button Content="Import" Background="#4CAF50" Foreground="White" Width="100" Click="ImportRecords" Margin="0,0,10,10"/>
             <Button Content="Export" Background="#2196F3" Foreground="White" Width="100" Click="ExportRecords" Margin="0,0,10,10" />
