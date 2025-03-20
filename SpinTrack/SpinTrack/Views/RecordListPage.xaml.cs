@@ -1,6 +1,7 @@
 ﻿namespace SpinTrack.Views
 {
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using Microsoft.Win32;
@@ -95,14 +96,14 @@
             var filteredRecords = _allRecords;
 
             // Filter by genre
-            string genreFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string genreFilter = (FilterComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
             if (!string.IsNullOrEmpty(genreFilter) && genreFilter != "All Genres")
             {
                 filteredRecords = filteredRecords.Where(record => record.Category == genreFilter).ToList();
             }
 
             // Filter by length
-            string lengthFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            string lengthFilter = (FilterLengthComboBox.SelectedItem as ComboBoxItem)?.Content.ToString()!;
             if (!string.IsNullOrEmpty(lengthFilter) && lengthFilter != "All Lengths")
             {
                 filteredRecords = filteredRecords.Where(record => record.Length == lengthFilter).ToList();
@@ -128,33 +129,48 @@
         {
             if (RecordListView.SelectedItem is Record selectedRecord)
             {
-                using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
-                {
-                    var worksheet = package.Workbook.Worksheets["Records"];
-                    int rowCount = worksheet.Dimension.End.Row;
+                // Show the confirmation dialog
+                CustomMessageBox confirmDialog = new CustomMessageBox("Are you sure you want to delete this record?", "Yes", "No");
+                confirmDialog.ShowDialog();
 
-                    for (int row = 2; row <= rowCount; row++)
+                // Check the result of the dialog
+                if (confirmDialog.ConfirmationResult) // Only proceed if the user clicked "Yes"
+                {
+                    using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
                     {
-                        if (worksheet.Cells[row, 1].Text == selectedRecord.Artist &&
-                            worksheet.Cells[row, 2].Text == selectedRecord.AlbumTitle)
+                        var worksheet = package.Workbook.Worksheets["Records"];
+                        int rowCount = worksheet.Dimension.End.Row;
+
+                        for (int row = 2; row <= rowCount; row++)
                         {
-                            worksheet.DeleteRow(row);
-                            break;
+                            if (worksheet.Cells[row, 1].Text == selectedRecord.Artist &&
+                                worksheet.Cells[row, 2].Text == selectedRecord.AlbumTitle)
+                            {
+                                worksheet.DeleteRow(row); // Delete the row
+                                break;
+                            }
                         }
+
+                        package.Save(); // Save changes
                     }
 
-                    package.Save();
-                }
+                    // Show success message
+                    new CustomMessageBox("Record deleted successfully.", "OK").ShowDialog();
 
-                // Reload the ListView
-                LoadRecords();
-                MessageBox.Show("Record deleted successfully!");
+                    // Reload the ListView
+                    LoadRecords();
+                }
             }
             else
             {
-                MessageBox.Show("Please select a record to delete.");
+                // Show an error message if no record is selected
+                new CustomMessageBox("Please select a record to delete.", "OK").ShowDialog();
             }
         }
+
+
+
+
 
         private void EditSelectedRecord(object sender, RoutedEventArgs e)
         {
@@ -213,7 +229,7 @@
             }
             else
             {
-                MessageBox.Show("Please select a record to edit.");
+                new CustomMessageBox("Please select a record to edit.").ShowDialog();
             }
 
         }
@@ -236,7 +252,7 @@
                     var worksheet = package.Workbook.Worksheets["Records"];
                     if (worksheet == null)
                     {
-                        MessageBox.Show("The selected file does not have a 'Records' worksheet.");
+                        new CustomMessageBox("The selected file does not have a 'Records' worksheet.", "OK").ShowDialog();
                         return;
                     }
 
@@ -248,7 +264,7 @@
                     {
                         if (worksheet.Cells[1, col].Text != expectedColumns[col - 1])
                         {
-                            MessageBox.Show($"Column mismatch: Expected '{expectedColumns[col - 1]}', but got '{worksheet.Cells[1, col].Text}'.");
+                            new CustomMessageBox($"Column mismatch: Expected '{expectedColumns[col - 1]}', but got '{worksheet.Cells[1, col].Text}'.", "OK").ShowDialog();
                             return;
                         }
                     }
@@ -259,7 +275,7 @@
                         var currentWorksheet = currentPackage.Workbook.Worksheets["Records"];
                         if (currentWorksheet == null)
                         {
-                            MessageBox.Show("Database file is corrupted or missing 'Records' worksheet.");
+                            new CustomMessageBox("Database file is corrupted or missing 'Records' worksheet.", "OK").ShowDialog();
                             return;
                         }
 
@@ -296,8 +312,7 @@
 
                         currentPackage.Save();
                     }
-
-                    MessageBox.Show("Records imported successfully!");
+                    new CustomMessageBox("Records imported successfully!", "OK").ShowDialog();
                 }
             }
         }
@@ -323,7 +338,7 @@
                     var worksheet = package.Workbook.Worksheets["Records"];
                     if (worksheet == null)
                     {
-                        MessageBox.Show("No data to export.");
+                        new CustomMessageBox("No data to export.", "OK").ShowDialog();
                         return;
                     }
 
@@ -334,7 +349,7 @@
                     exportPackage.Save();
                 }
 
-                MessageBox.Show("Records exported successfully!");
+                new CustomMessageBox("Records exported successfully!", "OK").ShowDialog();
             }
         }
 

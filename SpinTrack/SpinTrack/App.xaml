@@ -9,7 +9,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ui:ThemeResources RequestedTheme="Dark" AccentColor="SlateGray" />
                 <ui:XamlControlsResources />
-                <ResourceDictionary Source="PlaceHolderStyle.xaml" />
+                <ResourceDictionary Source="Styles/PlaceHolderStyle.xaml" />
+                <ResourceDictionary Source="Styles/SidebarMenuButtonStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -32,28 +32,28 @@ namespace SpinTrack.Views
             int releaseYear;
             if (!int.TryParse(ReleaseYearTextBox.Text, out releaseYear))
             {
-                MessageBox.Show("Please enter a valid release year.");
+                new CustomMessageBox("Please enter a valid release year.", "OK").ShowDialog();
                 return;
             }
-            string category = ((ComboBoxItem)CategoryComboBox.SelectedItem)?.Content.ToString();
-            string length = LengthStackPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked == true)?.Content.ToString();
+            string category = ((ComboBoxItem)CategoryComboBox.SelectedItem)?.Content.ToString()!;
+            string length = LengthStackPanel.Children.OfType<RadioButton>().FirstOrDefault(r => r.IsChecked == true)?.Content.ToString()!;
             int quantity;
             if (!int.TryParse(QuantityTextBox.Text, out quantity) || quantity <= 0)
             {
-                MessageBox.Show("Please enter a valid quantity.");
+                new CustomMessageBox("Please enter a valid quantity.", "OK").ShowDialog();
                 return;
             }
             bool outerCover = OuterCoverCheckBox.IsChecked == true;
             bool innerCover = InnerCoverCheckBox.IsChecked == true;
-            string vinylQuality = ((ComboBoxItem)VinylQualityComboBox.SelectedItem)?.Content.ToString();
-            string sleeveQuality = ((ComboBoxItem)SleeveQualityComboBox.SelectedItem)?.Content.ToString();
+            string vinylQuality = ((ComboBoxItem)VinylQualityComboBox.SelectedItem)?.Content.ToString()!;
+            string sleeveQuality = ((ComboBoxItem)SleeveQualityComboBox.SelectedItem)?.Content.ToString()!;
 
             // Validate required fields
             if (string.IsNullOrWhiteSpace(artist) || string.IsNullOrWhiteSpace(albumTitle) ||
                 string.IsNullOrWhiteSpace(category) || string.IsNullOrWhiteSpace(length) ||
                 string.IsNullOrWhiteSpace(vinylQuality) || string.IsNullOrWhiteSpace(sleeveQuality))
             {
-                MessageBox.Show("Please fill in all required fields.");
+                new CustomMessageBox("Please fill in all required fields.", "OK").ShowDialog();
                 return;
             }
 
@@ -63,12 +63,12 @@ namespace SpinTrack.Views
                 var excelManager = new ExcelManager();
                 excelManager.AddRecord(artist, albumTitle, releaseYear, category, length, quantity,
                     outerCover, innerCover, vinylQuality, sleeveQuality);
-                MessageBox.Show("Record saved successfully!");
+                new CustomMessageBox("Record saved successfully!", "OK").ShowDialog();
                 ClearFields();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while saving the record: {ex.Message}");
+                new CustomMessageBox($"An error occurred while saving the record: {ex.Message}", "OK").ShowDialog();
             }
         }
 
