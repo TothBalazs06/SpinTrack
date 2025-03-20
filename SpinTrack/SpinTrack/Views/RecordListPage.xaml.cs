@@ -1,7 +1,6 @@
 ﻿namespace SpinTrack.Views
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using Microsoft.Win32;
@@ -311,6 +310,7 @@
                         }
 
                         currentPackage.Save();
+                        LoadRecords();
                     }
                     new CustomMessageBox("Records imported successfully!", "OK").ShowDialog();
                 }
@@ -320,7 +320,6 @@
 
         public void ExportRecords(object sender, RoutedEventArgs e)
         {
-            // Open save file dialog
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "Excel Files (*.xlsx)|*.xlsx",
@@ -332,26 +331,41 @@
             {
                 string exportFilePath = saveFileDialog.FileName;
 
-                using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
-                using (var exportPackage = new ExcelPackage(new System.IO.FileInfo(exportFilePath)))
+                try
                 {
-                    var worksheet = package.Workbook.Worksheets["Records"];
-                    if (worksheet == null)
+                    using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
+                    using (var exportPackage = new ExcelPackage(new System.IO.FileInfo(exportFilePath)))
                     {
-                        new CustomMessageBox("No data to export.", "OK").ShowDialog();
-                        return;
+                        var worksheet = package.Workbook.Worksheets["Records"];
+                        if (worksheet == null)
+                        {
+                            new CustomMessageBox("No data to export.", "OK").ShowDialog();
+                            return;
+                        }
+
+                        var existingWorksheet = exportPackage.Workbook.Worksheets["Records"];
+                        if (existingWorksheet != null)
+                        {
+                            exportPackage.Workbook.Worksheets.Delete(existingWorksheet);
+                        }
+
+                        var exportWorksheet = exportPackage.Workbook.Worksheets.Add("Records");
+
+                        worksheet.Cells[1, 1, worksheet.Dimension.End.Row, worksheet.Dimension.End.Column]
+                            .Copy(exportWorksheet.Cells[1, 1]);
+
+                        exportPackage.Save();
                     }
 
-                    var exportWorksheet = exportPackage.Workbook.Worksheets.Add("Records");
-                    worksheet.Cells[1, 1, worksheet.Dimension.End.Row, worksheet.Dimension.End.Column]
-                        .Copy(exportWorksheet.Cells[1, 1]);
-
-                    exportPackage.Save();
+                    new CustomMessageBox("Records exported successfully!", "OK").ShowDialog();
                 }
-
-                new CustomMessageBox("Records exported successfully!", "OK").ShowDialog();
+                catch (Exception ex)
+                {
+                    new CustomMessageBox($"An error occurred during export: {ex.Message}", "OK").ShowDialog();
+                }
             }
         }
+
 
 
     }
