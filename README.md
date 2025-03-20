@@ -1,0 +1,2 @@
+# SpinTrack
+Vinyl record manager.
