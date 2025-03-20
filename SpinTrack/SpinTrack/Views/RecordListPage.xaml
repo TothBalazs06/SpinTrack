@@ -2,7 +2,7 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Record List">
-    <Grid Background="LightGray" Margin="20">
+    <Grid Background="#302621" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -10,10 +10,10 @@
         </Grid.RowDefinitions>
 
         <!-- Title -->
-        <TextBlock Text="Record List"
+        <TextBlock Foreground="WhiteSmoke" Text="Record List"
                    Grid.Row="0"
                    FontSize="24" FontWeight="Bold"
-                   Foreground="#34495E" Margin="0,0,0,20" />
+                   Margin="0,0,0,20" />
 
         <!-- ListView -->
         <ListView x:Name="RecordListView" Grid.Row="1" Margin="0,10">
