@@ -2,29 +2,31 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Credits">
-    <Grid Background="#302621" Margin="20">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Credits and Help" FontSize="24" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,0,0,20" />
+    <Viewbox Stretch="Uniform" MaxWidth="800">
+        <Grid Background="#302621" Margin="20">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Credits and Help" FontSize="24" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,0,0,20" />
 
-            <!-- Creator Attribution -->
-            <TextBlock Text="SpinTrack created by Balazs Toth"
+                <!-- Creator Attribution -->
+                <TextBlock Text="SpinTrack created by Balazs Toth"
                        FontSize="16" Foreground="LightGray" Margin="0,0,0,10" TextWrapping="Wrap" />
 
-            <!-- GitHub Repository -->
-            <TextBlock FontSize="16" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,10,0,0" Text="GitHub Repository:" />
-            <TextBlock FontSize="16" Foreground="Blue" Margin="0,0,0,10" TextWrapping="Wrap">
+                <!-- GitHub Repository -->
+                <TextBlock FontSize="16" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,10,0,0" Text="GitHub Repository:" />
+                <TextBlock FontSize="16" Foreground="Blue" Margin="0,0,0,10" TextWrapping="Wrap">
                 <Hyperlink NavigateUri="https://github.com/TothBalazs06/SpinTrack" RequestNavigate="Hyperlink_RequestNavigate">
                     https://github.com/TothBalazs06/SpinTrack
                 </Hyperlink>
-            </TextBlock>
+                </TextBlock>
 
-            <!-- Icon Attribution -->
-            <TextBlock FontSize="16" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,10,0,0" Text="Icons provided by:" />
-            <TextBlock FontSize="16" Foreground="Blue" Margin="0,0,0,10" TextWrapping="Wrap">
+                <!-- Icon Attribution -->
+                <TextBlock FontSize="16" FontWeight="Bold" Foreground="WhiteSmoke" Margin="0,10,0,0" Text="Icons provided by:" />
+                <TextBlock FontSize="16" Foreground="Blue" Margin="0,0,0,10" TextWrapping="Wrap">
                 <Hyperlink NavigateUri="https://www.freepik.com/" RequestNavigate="Hyperlink_RequestNavigate">
                     https://www.freepik.com/
                 </Hyperlink>
-            </TextBlock>
-        </StackPanel>
-    </Grid>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+    </Viewbox>
 </Page>

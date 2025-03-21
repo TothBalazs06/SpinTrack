@@ -18,7 +18,6 @@ namespace SpinTrack
         {
             InitializeComponent();
 
-            // Navigate to Add Record Page by default
             MainFrame.Navigate(new AddRecordPage());
         }
 

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SpinTrack.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Height="600" MinHeight="350" MinWidth="525" Width="900" WindowStartupLocation="CenterScreen"
+        Height="675" MinHeight="350" MinWidth="525" Width="900" WindowStartupLocation="CenterScreen"
         Icon="icon.ico" Title="SpinTrack">
     <Grid>
         <!-- Navigation Panel -->
