@@ -249,41 +249,56 @@
 
         private void DeleteSelectedRecord(object sender, RoutedEventArgs e)
         {
-            if (RecordListView.SelectedItem is Record selectedRecord)
+            // Check if there are any selected items
+            var selectedRecords = RecordListView.SelectedItems.Cast<Record>().ToList();
+
+            if (selectedRecords.Count == 0)
             {
-                CustomMessageBox confirmDialog = new CustomMessageBox("Are you sure you want to delete this record?", "Yes", "No");
-                confirmDialog.ShowDialog();
+                new CustomMessageBox("Please select one or more records to delete.", "OK").ShowDialog();
+                return;
+            }
 
-                if (confirmDialog.ConfirmationResult)
+            // Confirmation dialog
+            CustomMessageBox confirmDialog = new CustomMessageBox(
+                $"Are you sure you want to delete {selectedRecords.Count} record(s)?", "Yes", "No");
+            confirmDialog.ShowDialog();
+
+            if (confirmDialog.ConfirmationResult)
+            {
+                using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
                 {
-                    using (var package = new ExcelPackage(new System.IO.FileInfo(_filePath)))
-                    {
-                        var worksheet = package.Workbook.Worksheets["Records"];
-                        int rowCount = worksheet.Dimension.End.Row;
+                    var worksheet = package.Workbook.Worksheets["Records"];
+                    int rowCount = worksheet.Dimension.End.Row;
 
+                    // Loop through the selected records
+                    foreach (var selectedRecord in selectedRecords)
+                    {
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            // Match the record in the Excel sheet by Artist and AlbumTitle
                             if (worksheet.Cells[row, 1].Text == selectedRecord.Artist &&
                                 worksheet.Cells[row, 2].Text == selectedRecord.AlbumTitle)
                             {
                                 worksheet.DeleteRow(row);
+                                rowCount--; // Adjust rowCount after deletion
+                                row--; // Adjust row index to account for row shifting
                                 break;
                             }
                         }
-
-                        package.Save();
                     }
 
-                    new CustomMessageBox("Record deleted successfully.", "OK").ShowDialog();
-
-                    LoadRecords();
+                    // Save changes to the Excel file
+                    package.Save();
                 }
-            }
-            else
-            {
-                new CustomMessageBox("Please select a record to delete.", "OK").ShowDialog();
+
+                // Show success message
+                new CustomMessageBox($"{selectedRecords.Count} record(s) deleted successfully.", "OK").ShowDialog();
+
+                // Reload the updated records into the ListView
+                LoadRecords();
             }
         }
+
 
         private void EditSelectedRecord(object sender, RoutedEventArgs e)
         {
