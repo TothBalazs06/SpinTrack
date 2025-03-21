@@ -31,6 +31,19 @@
                 <ComboBoxItem Content="Sort by Album Title" />
                 <ComboBoxItem Content="Sort by Release Year" />
             </ComboBox>
+            <Button Margin="0,0,10,0" x:Name="ToggleSortOrderButton"
+        Width="31" Height="31"
+        Background="Transparent"
+        BorderBrush="SlateGray"
+        BorderThickness="1"
+        Click="ToggleSortOrderButton_Click"
+                    Padding="0">
+                <Button.Content>
+                    <Image x:Name="SortIconImage"
+               Width="25" Height="25"
+               Source="Assets/descending.ico" />
+                </Button.Content>
+            </Button>
 
             <!-- Filter ComboBox -->
             <ComboBox x:Name="FilterComboBox"
@@ -74,14 +87,12 @@
                 <TextBlock Text="Year Range:" Foreground="WhiteSmoke" FontSize="15" Margin="0,0,5,0" VerticalAlignment="Center" />
                 <TextBox x:Name="StartYearTextBox" Width="85" Margin="0,0,5,0" />
                 <TextBlock Text="to" Margin="0,0,5,0" FontSize="15" Foreground="WhiteSmoke" VerticalAlignment="Center" />
-                <TextBox x:Name="EndYearTextBox" Width="85"  Margin="0,0,5,0" />
-                <Button Content="Apply Year Filter" Click="ApplyYearFilter_Click" Background="Transparent" BorderThickness="1" BorderBrush="SlateGray" Foreground="WhiteSmoke" Margin="10,0,0,0" />
-            </WrapPanel>
-
-            <Button Content="Reset Filters" Width="120" Margin="0,0,0,0"
+                <TextBox x:Name="EndYearTextBox" Width="85"  Margin="0,0,10,0" />
+                <Button Content="Apply Year Filter" Click="ApplyYearFilter_Click" Background="Transparent" BorderThickness="1" BorderBrush="SlateGray" Foreground="WhiteSmoke" Margin="0,0,10,0" />
+                <Button Content="Reset Filters" Width="120"
         Background="Transparent" BorderThickness="1" BorderBrush="SlateGray" Foreground="WhiteSmoke"
         Click="ResetFilters_Click" />
-
+            </WrapPanel>
         </WrapPanel>
 
         <!-- ListView -->

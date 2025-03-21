@@ -10,6 +10,10 @@
 
   <ItemGroup>
     <None Remove="icon.ico" />
+    <None Remove="Views\ascending.ico" />
+    <None Remove="Views\Assets\ascending.ico" />
+    <None Remove="Views\Assets\descending.ico" />
+    <None Remove="Views\descending.ico" />
     <None Remove="Views\icon.ico" />
   </ItemGroup>
 
@@ -20,6 +24,12 @@
 
   <ItemGroup>
     <Content Include="icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Assets\ascending.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Assets\descending.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\icon.ico">

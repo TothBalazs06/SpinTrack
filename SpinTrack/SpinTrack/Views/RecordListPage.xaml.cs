@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Media.Imaging;
     using Microsoft.Win32;
     using OfficeOpenXml;
 
@@ -87,9 +88,28 @@
                 }
                 foreach (FrameworkElement child in RecordListWrapPanel.Children)
                 {
-                    child.Margin = new Thickness(0, 0, 10, 0); // Reset to default margin
+                    child.Margin = new Thickness(0, 0, 10, 0);
                 }
             }
+        }
+
+        private bool _isDescending = false;
+
+        private void ToggleSortOrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isDescending = !_isDescending;
+
+            if (_isDescending)
+            {
+                SortIconImage.Source = new BitmapImage(new Uri("Assets/descending.ico", UriKind.Relative)); // Path to descending icon
+            }
+            else
+            {
+                SortIconImage.Source = new BitmapImage(new Uri("Assets/ascending.ico", UriKind.Relative)); // Path to ascending icon
+            }
+
+            // Reapply sorting logic
+            SortComboBox_SelectionChanged(SortComboBox, null);
         }
 
 
@@ -98,26 +118,36 @@
             if (_allRecords == null || !_allRecords.Any()) return; // Ensure there are records to sort
 
             var selectedOption = (SortComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
-            List<Record> sortedRecords = new List<Record>();
+            List<Record> sortedRecords;
 
             switch (selectedOption)
             {
                 case "Sort by Artist":
-                    sortedRecords = _allRecords.OrderBy(record => record.Artist).ToList();
+                    sortedRecords = _isDescending
+                        ? _allRecords.OrderByDescending(record => record.Artist).ToList()
+                        : _allRecords.OrderBy(record => record.Artist).ToList();
                     break;
+
                 case "Sort by Album Title":
-                    sortedRecords = _allRecords.OrderBy(record => record.AlbumTitle).ToList();
+                    sortedRecords = _isDescending
+                        ? _allRecords.OrderByDescending(record => record.AlbumTitle).ToList()
+                        : _allRecords.OrderBy(record => record.AlbumTitle).ToList();
                     break;
+
                 case "Sort by Release Year":
-                    sortedRecords = _allRecords.OrderBy(record => int.Parse(record.ReleaseYear)).ToList();
+                    sortedRecords = _isDescending
+                        ? _allRecords.OrderByDescending(record => int.Parse(record.ReleaseYear)).ToList()
+                        : _allRecords.OrderBy(record => int.Parse(record.ReleaseYear)).ToList();
                     break;
+
                 default:
-                    sortedRecords = _allRecords.ToList();
+                    sortedRecords = _allRecords.ToList(); // Default to the original list
                     break;
             }
 
-            RecordListView.ItemsSource = sortedRecords;
+            RecordListView.ItemsSource = sortedRecords; // Update the ListView with sorted records
         }
+
 
         private void ApplyYearFilter_Click(object sender, RoutedEventArgs e)
         {
@@ -208,6 +238,7 @@
                 SearchTextBox.Text = string.Empty;
 
                 RecordListView.ItemsSource = _allRecords;
+                SortComboBox.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
