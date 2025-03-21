@@ -25,7 +25,6 @@
             LoadRecords();
         }
 
-
         private void LoadRecords()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -65,6 +64,95 @@
             _allRecords = records;
             RecordListView.ItemsSource = records;
         }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Check if the WrapPanel needs adjustment
+            if (e.NewSize.Width < 1500)
+            {
+                foreach (FrameworkElement child in RecordListWrapPanel.Children)
+                {
+                    child.Margin = new Thickness(0, 0, 10, 10); // Add bottom margin
+                }
+                foreach (FrameworkElement child in YearRangeWrapPanel.Children)
+                {
+                    child.Margin = new Thickness(0, 0, 10, 10);
+                }
+            }
+            else
+            {
+                foreach (FrameworkElement child in YearRangeWrapPanel.Children)
+                {
+                    child.Margin = new Thickness(0, 0, 10, 0);
+                }
+                foreach (FrameworkElement child in RecordListWrapPanel.Children)
+                {
+                    child.Margin = new Thickness(0, 0, 10, 0); // Reset to default margin
+                }
+            }
+        }
+
+
+        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_allRecords == null || !_allRecords.Any()) return; // Ensure there are records to sort
+
+            var selectedOption = (SortComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            List<Record> sortedRecords = new List<Record>();
+
+            switch (selectedOption)
+            {
+                case "Sort by Artist":
+                    sortedRecords = _allRecords.OrderBy(record => record.Artist).ToList();
+                    break;
+                case "Sort by Album Title":
+                    sortedRecords = _allRecords.OrderBy(record => record.AlbumTitle).ToList();
+                    break;
+                case "Sort by Release Year":
+                    sortedRecords = _allRecords.OrderBy(record => int.Parse(record.ReleaseYear)).ToList();
+                    break;
+                default:
+                    sortedRecords = _allRecords.ToList();
+                    break;
+            }
+
+            RecordListView.ItemsSource = sortedRecords;
+        }
+
+        private void ApplyYearFilter_Click(object sender, RoutedEventArgs e)
+        {
+            if (_allRecords == null || !_allRecords.Any()) return; // Ensure there are records to filter
+
+            // Validate input
+            if (!int.TryParse(StartYearTextBox.Text, out int startYear))
+            {
+                new CustomMessageBox($"Please enter a valid start year.").ShowDialog();
+                return;
+            }
+            if (!int.TryParse(EndYearTextBox.Text, out int endYear))
+            {
+                new CustomMessageBox("Please enter a valid end year.").ShowDialog();
+                return;
+            }
+
+            if (startYear > endYear)
+            {
+                new CustomMessageBox($"The start year cannot be greater than the end year.").ShowDialog();
+                return;
+            }
+
+            var filteredRecords = _allRecords.Where(record =>
+            {
+                if (int.TryParse(record.ReleaseYear, out int releaseYear))
+                {
+                    return releaseYear >= startYear && releaseYear <= endYear;
+                }
+                return false;
+            }).ToList();
+
+            RecordListView.ItemsSource = filteredRecords;
+        }
+
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -165,10 +253,6 @@
                 new CustomMessageBox("Please select a record to delete.", "OK").ShowDialog();
             }
         }
-
-
-
-
 
         private void EditSelectedRecord(object sender, RoutedEventArgs e)
         {
