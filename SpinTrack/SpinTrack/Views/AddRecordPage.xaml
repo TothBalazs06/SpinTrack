@@ -91,6 +91,8 @@
                         <ComboBoxItem Content="New Age" />
                         <ComboBoxItem Content="Disco" />
                         <ComboBoxItem Content="Grunge" />
+                        <ComboBoxItem Content="Cabaret" />
+                        <ComboBoxItem Content="Tale/Fairy Tale" />
                     </ComboBox>
 
                     <!-- Length -->
